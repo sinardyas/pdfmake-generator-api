@@ -10,6 +10,7 @@ const fonts = {
 };
 
 const generatePdf = (docDefinition, callback) => {
+    // eslint-disable-next-line no-useless-catch
     try {
       const printer = new PdfMakePrinter(fonts);
       const doc = printer.createPdfKitDocument(docDefinition);
