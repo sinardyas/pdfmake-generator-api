@@ -7,6 +7,9 @@ import pdfContent from './pinjamanOnline';
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 
 app.get('/wake-me-up', (req, res) => res.json({ message: 'Im awake!' }));
 
@@ -33,7 +36,7 @@ app.use((req, res, next) => {
 
 
 app.post('/v1/generate-pdf/pinjaman-online', (req, res) => {
-  const docDefinition = pdfContent;
+  const docDefinition = pdfContent(req.body);
 
   generatePdf(docDefinition, (response) => res.send(response)); // sends a base64 encoded string to client
 });

@@ -81,3 +81,45 @@ axios.post('http://localhost:5001/v1/generate-pdf', definition)
 ```
 
 There will be many ways this could be done, this is just a was I have used it in react.
+
+
+==========================
+
+
+noAnggota: '14110110099'
+namaLengkapKtp: 'Sinar Dyas'
+jenisKelamin: 'Laki Laki'
+jabatan: 'Manager'
+tempatPelayananTerdaftar: 'Cabang Tangerang'
+pekerjaan: 'Manager'
+tglLahir: '31 Mei 1996'
+alamatKtp: '4968  Cambridge Place, Citra Raya'
+alamatTinggal: '4968  Cambridge Place, Citra Raya'
+noTelp: '082227777619'
+suamiIstriNamaKtp: '-'
+suamiIstriNoAnggota: '-'
+suamiIstriPekerjaan: '-'
+suamiIstriJabatan: '-'
+suamiIstriAlamatKantor: '-'
+suamiIstriNoTelpKantor: '-'
+kerabatNamaKtp: 'Advento Bagas'
+kerabatNoAnggota: '14110110100'
+kerabatNoTelp: '082227777618'
+kerabatAlamatKtp: '4968  Cambridge Place, Citra Raya 2'
+kerabatStatusHubungan: 'Partner In Crime'
+saldoSimpananSaham: '5000000'
+saldoSisaPinjaman: '1000000'
+saldoSimpananMultiguna: '3000000'
+saldoSimpananMegapolitan: '2000000'
+jumlahPinjaman: '5000000'
+jumlahPermohonanPinjaman: '5000000'
+jenisPinjaman: 'Megapolitan'
+tujuanPinjaman: 'Iseng'
+bayaranPerbulan: '500000'
+jangkaWaktuPinjaman: '12'
+jumlahPermohonanPinjamanTerbilang: ''
+jaminanPinjaman: 'Tanah 13 Hektar'
+hargaJaminan: 'Rp 3T'
+lokasiKondisiJaminan: 'Jawa Barat'
+pemilikJaminan: 'Sinar Dyas'
+statusJaminan: 'Aktif'
