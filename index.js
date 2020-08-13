@@ -38,7 +38,14 @@ app.use((req, res, next) => {
 app.post('/v1/generate-pdf/pinjaman-online', (req, res) => {
   const docDefinition = pdfContent(req.body);
 
-  generatePdf(docDefinition, (response) => res.send(response)); // sends a base64 encoded string to client
+  const { downloadable } = req.query;
+
+  generatePdf(docDefinition, (response) => {
+    if (downloadable) {
+      res.header('content-type', 'application/pdf');
+    }
+    res.send(response);
+  }); // sends a base64 encoded string to client
 });
 
 app.post('/v1/generate-pdf', (req, res) => {
