@@ -1,7 +1,5 @@
 import imageData from './assets/images/headerbase64';
 
-// playground requires you to assign document definition to a variable called dd
-
 class PinjamanOnline {
 	constructor(
 		noAnggota,

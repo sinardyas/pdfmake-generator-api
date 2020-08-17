@@ -2,7 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import generatePdf from './generator';
-import pdfContent from './pinjamanOnline';
+import pinjamanOnline from './pinjamanOnline';
+import pendaftaranOnline from './pendaftaranOnline';
 
 const app = express();
 app.use(cors());
@@ -36,7 +37,20 @@ app.use((req, res, next) => {
 
 
 app.post('/v1/generate-pdf/pinjaman-online', (req, res) => {
-  const docDefinition = pdfContent(req.body);
+  const docDefinition = pinjamanOnline(req.body);
+
+  const { downloadable } = req.query;
+
+  generatePdf(docDefinition, (response) => {
+    if (downloadable) {
+      res.header('content-type', 'application/pdf');
+    }
+    res.send(response);
+  }); // sends a base64 encoded string to client
+});
+
+app.post('/v1/generate-pdf/pendaftaran-anggota', (req, res) => {
+  const docDefinition = pendaftaranOnline(req.body);
 
   const { downloadable } = req.query;
 
