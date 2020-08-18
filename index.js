@@ -44,8 +44,12 @@ app.post('/v1/generate-pdf/pinjaman-online', (req, res) => {
   generatePdf(docDefinition, (response) => {
     if (downloadable) {
       res.header('content-type', 'application/pdf');
+      return res.send(response);
     }
-    res.send(response);
+    return res.json({
+      status: 200,
+      data: response
+    });
   }); // sends a base64 encoded string to client
 });
 
