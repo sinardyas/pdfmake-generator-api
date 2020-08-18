@@ -57,15 +57,30 @@ app.post('/v1/generate-pdf/pendaftaran-anggota', (req, res) => {
   generatePdf(docDefinition, (response) => {
     if (downloadable) {
       res.header('content-type', 'application/pdf');
+      return res.send(response);
     }
-    res.send(response);
+    return res.json({
+      status: 200,
+      data: response
+    });
   }); // sends a base64 encoded string to client
 });
 
 app.post('/v1/generate-pdf', (req, res) => {
     const docDefinition = req.body;
 
-    generatePdf(docDefinition, (response) => res.send(response)); // sends a base64 encoded string to client
+    const { downloadable } = req.query;
+
+    generatePdf(docDefinition, (response) => {
+      if (downloadable) {
+        res.header('content-type', 'application/pdf');
+        return res.send(response);
+      }
+      return res.json({
+        status: 200,
+        data: response
+      });
+    }); // sends a base64 encoded string to client
 });
 
 const PORT = process.env.PORT || 5000;
