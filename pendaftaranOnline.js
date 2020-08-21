@@ -99,7 +99,7 @@ const templatePdf = (data) => {
 			alignment: 'center'
 		},
 		content: [
-			'\n',
+			'\n\n\n',
 			{
 				text: 'SURAT PERMOHONAN MENJADI ANGGOTA',
 				style: 'header'
@@ -130,15 +130,11 @@ const templatePdf = (data) => {
 			{
 				columns: [
 					{
-						text: '1. Nama Lengkap',
-						width: 160
+						text: `1. Nama Lengkap : ${userData.namaLengkap}`,
+						width: 250
 					},
 					{
-						text: `: ${userData.namaLengkap}`,
-						width: 160
-					},
-					{
-						text: `Panggilan\t: ${userData.namaPanggilan}`
+						text: `Panggilan : ${userData.namaPanggilan}`
 					}
 				]
 			},
@@ -146,67 +142,31 @@ const templatePdf = (data) => {
 			{
 				columns: [
 					{
-						text: 'Nama',
-						width: 160
+						text: `Nama : ${userData.namaReferral}`,
+						width: 250
 					},
 					{
-						text: `: ${userData.namaReferral}`,
-						width: 160
-					},
-					{
-						text: `No. Buku Anggota\t: ${userData.noBukuAnggota}`
+						text: `No. Buku Anggota : ${userData.noBukuAnggota}`
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '3. Jenis Keanggotaan',
-						width: 160
-					},
-					{
-						text: `: ${userData.jenisKeanggotaan}`,
-						width: 160
+						text: `3. Jenis Keanggotaan : ${userData.jenisKeanggotaan}`,
+						width: 250
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '4. Identitas',
-						width: 160
+						text: `4. Identitas : ${userData.jenisIdentitas}`,
+						width: 250
 					},
 					{
-						text: `: ${userData.jenisIdentitas}`,
-						width: 40
-					},
-					{
-						text: 'No. Identitas:',
-						width: 80
-					},
-					{
-						table: {
-							body: [
-								[
-									'3',
-									'1',
-									'3',
-									'1',
-									'3',
-									'1',
-									'3',
-									'1',
-									'3',
-									'1',
-									'3',
-									'1',
-									'3',
-									'1',
-									'3',
-									'1'
-								]
-							]
-						}
+						text: `No. Identitas : ${userData.noIdentitas}`,
+						width: 250
 					}
 				]
 			},
@@ -214,80 +174,54 @@ const templatePdf = (data) => {
 			{
 				columns: [
 					{
-						text: '5. Alamat KTP/SIM \n\t(Sesuai Identitas)',
-						width: 160
-					},
-					{
-						text: `: ${userData.alamatKtp}`
+						text: `5. Alamat KTP/SIM (Sesuai Identitas) : ${userData.alamatKtp}`,
+						width: 'auto'
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '6. Alamat Tinggal',
-						width: 160
-					},
-					{
-						text: `: ${userData.alamatTinggal}`
+						text: `6. Alamat Tinggal : ${userData.alamatTinggal}`,
+						width: 'auto'
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '7. Pendidikan',
-						width: 160
-					},
-					{
-						text: `: ${userData.pendidikan}`
+						text: `7. Pendidikan : ${userData.pendidikan}`
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '8. Pekerjaan',
-						width: 160
-					},
-					{
-						text: `: ${userData.pekerjaan}`
+						text: `8. Pekerjaan : ${userData.pekerjaan}`
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '9. Usaha',
-						width: 160
-					},
-					{
-						text: `: ${userData.usaha}`
+						text: `9. Usaha : ${userData.usaha}`
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '10. Agama',
-						width: 160
-					},
-					{
-						text: `: ${userData.agama}`
+						text: `10. Agama : ${userData.agama}`
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '11. Tempat/Tanggal Lahir',
-						width: 160
+						text: `11. Tempat/Tanggal Lahir : ${userData.tempatLahir}, ${userData.tanggalLahir}`
 					},
 					{
-						text: `: ${userData.tempatLahir}, ${userData.tanggalLahir}`
-					},
-					{
-						text: `Jenis Kelamin\t: ${userData.jenisKelamin}`,
+						text: `Jenis Kelamin : ${userData.jenisKelamin}`,
 						width: 160
 					},
 				]
@@ -295,25 +229,17 @@ const templatePdf = (data) => {
 			{
 				columns: [
 					{
-						text: '12. Nama Ibu Kandung',
-						width: 160
-					},
-					{
-						text: `: ${userData.ibuKandung}`
+						text: `12. Nama Ibu Kandung : ${userData.ibuKandung}`
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '13. Status Keluarga',
-						width: 160
+						text: `13. Status Keluarga : ${userData.statusKeluarga}`
 					},
 					{
-						text: `: ${userData.statusKeluarga}`
-					},
-					{
-						text: `Tanggal Kawin\t: ${userData.tanggalKawin}`,
+						text: `Tanggal Kawin : ${userData.tanggalKawin}`,
 						width: 160
 					},
 				]
@@ -321,14 +247,11 @@ const templatePdf = (data) => {
 			{
 				columns: [
 					{
-						text: '14. Nama Istri/Suami',
-						width: 160
-					},
-					{
-						text: `: ${userData.namaIstriSuami}`
+						text: `14. Nama Istri/Suami : ${userData.namaIstriSuami}`
 					}
 				]
 			},
+			'\n',
 			{
 				columns: [
 					{
@@ -349,14 +272,10 @@ const templatePdf = (data) => {
 			{
 				columns: [
 					{
-						text: '16. No. Telp Rumah',
-						width: 160
+						text: `16. No. Telp Rumah : ${userData.noTelpRumah}`
 					},
 					{
-						text: `: ${userData.noTelpRumah}`
-					},
-					{
-						text: `HP\t: ${userData.noHandphone}`,
+						text: `No. HP : ${userData.noHandphone}`,
 						width: 160
 					},
 				]
@@ -364,11 +283,7 @@ const templatePdf = (data) => {
 			{
 				columns: [
 					{
-						text: '17. Alamat Tempat Kerja/Kantor',
-						width: 160
-					},
-					{
-						text: `: ${userData.alamatKantor}`
+						text: `17. Alamat Tempat Kerja/Kantor : ${userData.alamatKantor}`
 					},
 					{
 						text: `Telp. Kantor\t: ${userData.noTelpKantor}`,
@@ -376,6 +291,7 @@ const templatePdf = (data) => {
 					},
 				]
 			},
+			'\n',
 			{
 				columns: [
 					{
@@ -444,7 +360,7 @@ const templatePdf = (data) => {
 					}
 				]
 			},
-			'\n\n\n\n',
+			'\n\n\n\n\n\n\n\n\n',
 			'Menyetujui,',
 			{
 				columns: [
