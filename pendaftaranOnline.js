@@ -170,7 +170,6 @@ const templatePdf = (data) => {
 					}
 				]
 			},
-			'\n',
 			{
 				columns: [
 					{
