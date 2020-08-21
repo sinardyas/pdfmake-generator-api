@@ -3,6 +3,7 @@ import imageData from './assets/images/headerbase64';
 class PendaftaranOnline {
 	constructor(
 		namaLengkap,
+		namaPanggilan,
 		namaReferral,
 		noBukuAnggota,
 		jenisKeanggotaan,
@@ -28,6 +29,7 @@ class PendaftaranOnline {
 		ahliWaris
 	) {
 		this.namaLengkap = namaLengkap;
+		this.namaPanggilan = namaPanggilan;
 		this.namaReferral = namaReferral;
 		this.noBukuAnggota = noBukuAnggota;
 		this.jenisKeanggotaan = jenisKeanggotaan;
@@ -55,6 +57,7 @@ class PendaftaranOnline {
 
 	clone(data) {
 		this.namaLengkap = data.namaLengkap ? data.namaLengkap : '';
+		this.namaPanggilan = data.namaPanggilan ? data.namaPanggilan : '';
 		this.namaReferral = data.namaReferral ? data.namaReferral : '';
 		this.noBukuAnggota = data.noBukuAnggota ? data.noBukuAnggota : '';
 		this.jenisKeanggotaan = data.jenisKeanggotaan ? data.jenisKeanggotaan : '';
