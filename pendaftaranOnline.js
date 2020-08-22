@@ -1,3 +1,4 @@
+import moment from 'moment';
 import imageData from './assets/images/headerbase64';
 
 class PendaftaranOnline {
@@ -65,16 +66,16 @@ class PendaftaranOnline {
 		this.noIdentitas = data.noIdentitas ? data.noIdentitas : '';
 		this.alamatKtp = data.alamatKtp ? data.alamatKtp : '';
 		this.alamatTinggal = data.alamatTinggal ? data.alamatTinggal : '';
-		this.pendidikan = data.pendidikan ? data.pendidikan : '';
 		this.pekerjaan = data.pekerjaan ? data.pekerjaan : '';
+		this.pendidikan = data.pendidikan ? data.pendidikan : '';
 		this.usaha = data.usaha ? data.usaha : '';
 		this.agama = data.agama ? data.agama : '';
 		this.tempatLahir = data.tempatLahir ? data.tempatLahir : '';
-		this.tanggalLahir = data.tanggalLahir ? data.tanggalLahir : '';
+		this.tanggalLahir = data.tanggalLahir ? moment(new Date(data.tanggalLahir)).format('DD/MM/YYYY') : '';
 		this.jenisKelamin = data.jenisKelamin ? data.jenisKelamin : '';
 		this.ibuKandung = data.ibuKandung ? data.ibuKandung : '';
 		this.statusKeluarga = data.statusKeluarga ? data.statusKeluarga : '';
-		this.tanggalKawin = data.tanggalKawin ? data.tanggalKawin : '';
+		this.tanggalKawin = data.tanggalKawin ? moment(new Date(data.tanggalKawin)).format('DD/MM/YYYY') : '-';
 		this.namaIstriSuami = data.namaIstriSuami ? data.namaIstriSuami : '';
 		this.noTelpRumah = data.noTelpRumah ? data.noTelpRumah : '';
 		this.noHandphone = data.noHandphone ? data.noHandphone : '';
@@ -92,7 +93,7 @@ const templatePdf = (data) => {
 	let ahliWarisTable = [['No', 'Nama Lengkap', 'Hubungan']];
 	ahliWarisTable = [
 		...ahliWarisTable,
-		...userData.ahliWaris.map((x, i) => [i, x && x.nama, x && x.hubungan])
+		...userData.ahliWaris.map((x, i) => [i + 1, (x && x.nama) || '-', (x && x.hubungan) || '-'])
 	];
 
 	return {
@@ -134,7 +135,7 @@ const templatePdf = (data) => {
 				columns: [
 					{
 						text: `1. Nama Lengkap : ${userData.namaLengkap}`,
-						width: 250
+						width: 'auto'
 					},
 					{
 						text: `Panggilan : ${userData.namaPanggilan}`
@@ -228,6 +229,7 @@ const templatePdf = (data) => {
 					},
 				]
 			},
+			'\n\n\n',
 			{
 				columns: [
 					{
@@ -238,11 +240,12 @@ const templatePdf = (data) => {
 			{
 				columns: [
 					{
-						text: `13. Status Keluarga : ${userData.statusKeluarga}`
+						text: `13. Status Keluarga : ${userData.statusKeluarga}`,
+						width: 250
 					},
 					{
 						text: `Tanggal Kawin : ${userData.tanggalKawin}`,
-						width: 160
+						width: 250
 					},
 				]
 			},
@@ -253,7 +256,6 @@ const templatePdf = (data) => {
 					}
 				]
 			},
-			'\n',
 			{
 				columns: [
 					{
@@ -262,7 +264,7 @@ const templatePdf = (data) => {
 					},
 					{
 						table: {
-							widths: ['auto', 'auto', 60],
+							widths: [20, 'auto', 100],
 							heights: 10,
 							margin: 0,
 							body: ahliWarisTable
@@ -287,13 +289,12 @@ const templatePdf = (data) => {
 					{
 						text: `17. Alamat Tempat Kerja/Kantor : ${userData.alamatKantor}`
 					},
-					{
-						text: `Telp. Kantor\t: ${userData.noTelpKantor}`,
-						width: 160
-					},
 				]
 			},
-			'\n',
+			{
+				text: `Telp. Kantor : ${userData.noTelpKantor}`,
+				width: 160
+			},
 			{
 				columns: [
 					{
@@ -362,7 +363,7 @@ const templatePdf = (data) => {
 					}
 				]
 			},
-			'\n\n\n\n\n\n\n\n\n',
+			'\n\n\n\n\n\n',
 			'Menyetujui,',
 			{
 				columns: [
