@@ -1,3 +1,4 @@
+import TimeZone from 'moment-timezone';
 import imageData from './assets/images/headerbase64';
 
 class PinjamanOnline {
@@ -80,13 +81,15 @@ class PinjamanOnline {
 	}
 
 	clone(data) {
+		const formatCurrency = (amount) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'IDR' }).format(amount);
+
 		this.noAnggota = data.noAnggota ? data.noAnggota : '';
 		this.namaLengkapKtp = data.namaLengkapKtp ? data.namaLengkapKtp : '';
 		this.jenisKelamin = data.jenisKelamin ? data.jenisKelamin : '';
 		this.jabatan = data.jabatan ? data.jabatan : '';
 		this.tempatPelayananTerdaftar = data.tempatPelayananTerdaftar ? data.tempatPelayananTerdaftar : '';
 		this.pekerjaan = data.pekerjaan ? data.pekerjaan : '';
-		this.tglLahir = data.tglLahir ? data.tglLahir : '';
+		this.tglLahir = data.tglLahir ? TimeZone(data.tglLahir).tz('Asia/Jakarta').format('DD/MM/YYYY') : '';
 		this.alamatKtp = data.alamatKtp ? data.alamatKtp : '';
 		this.alamatTinggal = data.alamatTinggal ? data.alamatTinggal : '';
 		this.noTelp = data.noTelp ? data.noTelp : '';
@@ -101,19 +104,19 @@ class PinjamanOnline {
 		this.kerabatNoTelp = data.kerabatNoTelp ? data.kerabatNoTelp : '';
 		this.kerabatAlamatKtp = data.kerabatAlamatKtp ? data.kerabatAlamatKtp : '';
 		this.kerabatStatusHubungan = data.kerabatStatusHubungan ? data.kerabatStatusHubungan : '';
-		this.saldoSimpananSaham = data.saldoSimpananSaham ? data.saldoSimpananSaham : '';
-		this.saldoSisaPinjaman = data.saldoSisaPinjaman ? data.saldoSisaPinjaman : '';
-		this.saldoSimpananMultiguna = data.saldoSimpananMultiguna ? data.saldoSimpananMultiguna : '';
-		this.saldoSimpananMegapolitan = data.saldoSimpananMegapolitan ? data.saldoSimpananMegapolitan : '';
-		this.jumlahPinjaman = data.jumlahPinjaman ? data.jumlahPinjaman : '';
-		this.jumlahPermohonanPinjaman = data.jumlahPermohonanPinjaman ? data.jumlahPermohonanPinjaman : '';
+		this.saldoSimpananSaham = data.saldoSimpananSaham ? formatCurrency(data.saldoSimpananSaham) : '';
+		this.saldoSisaPinjaman = data.saldoSisaPinjaman ? formatCurrency(data.saldoSisaPinjaman) : '';
+		this.saldoSimpananMultiguna = data.saldoSimpananMultiguna ? formatCurrency(data.saldoSimpananMultiguna) : '';
+		this.saldoSimpananMegapolitan = data.saldoSimpananMegapolitan ? formatCurrency(data.saldoSimpananMegapolitan) : '';
+		this.jumlahPinjaman = data.jumlahPinjaman ? formatCurrency(data.jumlahPinjaman) : '';
+		this.jumlahPermohonanPinjaman = data.jumlahPermohonanPinjaman ? formatCurrency(data.jumlahPermohonanPinjaman) : '';
 		this.jenisPinjaman = data.jenisPinjaman ? data.jenisPinjaman : '';
 		this.tujuanPinjaman = data.tujuanPinjaman ? data.tujuanPinjaman : '';
-		this.bayaranPerbulan = data.bayaranPerbulan ? data.bayaranPerbulan : '';
+		this.bayaranPerbulan = data.bayaranPerbulan ? formatCurrency(data.bayaranPerbulan) : '';
 		this.jangkaWaktuPinjaman = data.jangkaWaktuPinjaman ? data.jangkaWaktuPinjaman : '';
 		this.jumlahPermohonanPinjamanTerbilang = data.jumlahPermohonanPinjamanTerbilang ? data.jumlahPermohonanPinjamanTerbilang : '';
 		this.jaminanPinjaman = data.jaminanPinjaman ? data.jaminanPinjaman : '';
-		this.hargaJaminan = data.hargaJaminan ? data.hargaJaminan : '';
+		this.hargaJaminan = data.hargaJaminan ? formatCurrency(data.hargaJaminan) : '';
 		this.lokasiKondisiJaminan = data.lokasiKondisiJaminan ? data.lokasiKondisiJaminan : '';
 		this.pemilikJaminan = data.pemilikJaminan ? data.pemilikJaminan : '';
 		this.statusJaminan = data.statusJaminan ? data.statusJaminan : '';
@@ -123,7 +126,7 @@ class PinjamanOnline {
 }
 
 const templatePdf = (data) => {
-	const userData = new PinjamanOnline().clone(data);
+	const userPinjaman = new PinjamanOnline().clone(data);
 
 	const date = new Date();
 	const day = date.getDate();
@@ -131,21 +134,21 @@ const templatePdf = (data) => {
 	const year = date.getFullYear();
 
 	return {
+		header: {
+			image: 'headerImg',
+			width: 550,
+			alignment: 'center'
+		},
 		content: [
-			{
-				image: 'headerImg',
-				width: 550
-			},
-			'\n',
+			'\n\n\n',
 			{
 				text: 'SURAT PERMOHONAN PINJAMAN',
 				style: 'header'
 			},
-			'\n',
 			{
 				columns: [
 					{
-						text: `Nama Pemohon: ${userData.namaLengkapKtp}`,
+						text: `Nama Pemohon: ${userPinjaman.namaLengkapKtp}`,
 						width: '70%'
 					},
 					{
@@ -160,78 +163,55 @@ const templatePdf = (data) => {
 			{
 				columns: [
 					{
-						text: '1. Nama (Sesuai KTP)',
-						width: 160
+						text: `1. Nama (Sesuai KTP) : ${userPinjaman.namaLengkapKtp}`,
+						width: 250
 					},
 					{
-						text: `: ${userData.namaLengkapKtp}`,
-						width: 160
-					},
-					{
-						text: 'No. Buku Anggota\t: 14110110099'
+						text: 'No. Buku Anggota : 14110110099'
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '2. Pekerjaan`',
-						width: 160
+						text: `2. Pekerjaan : ${userPinjaman.pekerjaan}`,
+						width: 250
 					},
 					{
-						text: `: ${userData.pekerjaan}`,
-						width: 160
-					},
-					{
-						text: `Jabatan Sekarang\t: ${userData.jabatan}`
+						text: `Jabatan Sekarang : ${userPinjaman.jabatan}`
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '3. Tempat/Tanggal Lahir',
-						width: 160
+						text: `3. Tempat/Tanggal Lahir : ${userPinjaman.tglLahir}`,
+						width: 350
 					},
 					{
-						text: `: ${userData.tglLahir}`,
-						width: 160
-					},
-					{
-						text: `Jenis Kelamin\t\t\t: ${userData.jenisKelamin}`,
+						text: `Jenis Kelamin : ${userPinjaman.jenisKelamin}`,
+						width: 'auto'
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '4. Alamat Rumah (KTP)',
-						width: 160
-					},
-					{
-						text: `: ${userData.alamatKtp}`
+						text: `4. Alamat Rumah (KTP) : ${userPinjaman.alamatKtp}`
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '5. Alamat Tinggal (Saat ini)',
-						width: 160
-					},
-					{
-						text: `: ${userData.alamatTinggal}`
+						text: `5. Alamat Tinggal (Saat ini) : ${userPinjaman.alamatTinggal}`
 					}
 				]
 			},
 			{
 					columns: [
 					{
-						text: '6. No. Telepon / HP',
-						width: 160
-					},
-					{
-						text: `: ${userData.noTelp}`
+						text: `6. No. Telepon / HP : ${userPinjaman.noTelp}`
 					}
 				]
 			},
@@ -242,52 +222,36 @@ const templatePdf = (data) => {
 			{
 				columns: [
 					{
-						text: '7. Nama',
-						width: 160
+						text: `7. Nama : ${userPinjaman.suamiIstriNamaKtp}`,
+						width: 250
 					},
 					{
-						text: `: ${userData.suamiIstriNamaKtp}`,
-						width: 160
-					},
-					{
-						text: `No. Buku Anggota\t: ${userData.suamiIstriNoAnggota}`
+						text: `No. Buku Anggota : ${userPinjaman.suamiIstriNoAnggota}`
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '8. Pekerjaan',
-						width: 160
+						text: `8. Pekerjaan : ${userPinjaman.suamiIstriPekerjaan}`,
+						width: 250
 					},
 					{
-						text: `: ${userData.suamiIstriPekerjaan}`,
-						width: 160
-					},
-					{
-						text: `Jabatan Sekarang\t: ${userData.suamiIstriJabatan}`
+						text: `Jabatan Sekarang : ${userPinjaman.suamiIstriJabatan}`
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '9. Alamat Perusahaan`',
-						width: 160
-					},
-					{
-						text: `: ${userData.suamiIstriAlamatKantor}`
+						text: `9. Alamat Perusahaan : ${userPinjaman.suamiIstriAlamatKantor}`
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '\u200B\tNo. Telp Perusahaan',
-						width: 160
-					},
-					{
-						text: `: ${userData.suamiIstriNoTelpKantor}`
+						text: `\u200B\tNo. Telp Perusahaan : ${userPinjaman.suamiIstriNoTelpKantor}`
 					}
 				]
 			},
@@ -298,44 +262,33 @@ const templatePdf = (data) => {
 			{
 				columns: [
 					{
-						text: '10. Nama',
-						width: 160
+						text: `10. Nama : ${userPinjaman.kerabatNamaKtp}`,
+						width: 250
 					},
 					{
-						text: `: ${userData.kerabatNamaKtp}`,
-						width: 160
-					},
-					{
-						text: `No. Buku Anggota\t: ${userData.kerabatNoAnggota}`
+						text: `No. Buku Anggota : ${userPinjaman.kerabatNoAnggota}`
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '11. Alamat',
-						width: 160
-					},
-					{
-						text: `: ${userData.kerabatAlamatKtp}`
+						text: `11. Alamat : ${userPinjaman.kerabatAlamatKtp}`
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '12. Hubungan dgn Pemohon',
-						width: 160
+						text: `12. Hubungan dgn Pemohon : ${userPinjaman.kerabatStatusHubungan}`,
+						width: 250
 					},
 					{
-						text: `: ${userData.kerabatStatusHubungan}`,
-						width: 160
-					},
-					{
-						text: `No. Telp\t: ${userData.kerabatNoTelp}`
+						text: `No. Telp : ${userPinjaman.kerabatNoTelp}`
 					}
 				]
 			},
+			'\n\n\n\n\n\n',
 			{
 				text: 'D. DATA KEUANGAN ANGGOTA',
 				style: 'sectionTitle'
@@ -343,39 +296,25 @@ const templatePdf = (data) => {
 			{
 				columns: [
 					{
-						text: '13. Saldo Simpanan Saham',
-						width: 180
+						text: `13. Saldo Simpanan Saham : ${userPinjaman.saldoSimpananSaham}`,
+						width: 250
 					},
 					{
-						text: `: ${userData.saldoSimpananSaham}`,
-						width: 130
-					},
-					{
-						text: `16. Sisa Pinjaman: ${userData.saldoSisaPinjaman}`
+						text: `16. Sisa Pinjaman : ${userPinjaman.saldoSisaPinjaman}`
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '14. Saldo Simpanan Megapolitan',
-						width: 180
-					},
-					{
-						text: `: ${userData.saldoSimpananMegapolitan}`,
-						width: 160
+						text: `14. Saldo Simpanan Megapolitan : ${userPinjaman.saldoSimpananMegapolitan}`,
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '15. Saldo Simpanan Multiguna',
-						width: 180
-					},
-					{
-						text: `: ${userData.saldoSimpananMultiguna}`,
-						width: 160
+						text: `15. Saldo Simpanan Multiguna : ${userPinjaman.saldoSimpananMultiguna}`,
 					}
 				]
 			},
@@ -386,112 +325,67 @@ const templatePdf = (data) => {
 			{
 				columns: [
 					{
-						text: '19. Jumlah Permohonan Pinjaman',
-						width: 200
-					},
-					{
-						text: `: ${userData.jumlahPermohonanPinjaman}`,
-						width: 160
+						text: `19. Jumlah Permohonan Pinjaman : ${userPinjaman.jumlahPermohonanPinjaman}`,
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '',
-						width: '40%'
+						text: `20. Jenis Pinjaman : ${userPinjaman.jenisPinjaman}`,
+						width: 250
 					},
 					{
-						text: 'Satu Juta Rupiah',
-						width: '60%'
+						text: `Jangka waktu pengembalian : ${userPinjaman.jangkaWaktuPinjaman}`,
+						width: 'auto'
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '20. Jenis Pinjaman',
-						width: 200
-					},
-					{
-						text: `: ${userData.jenisPinjaman}`,
-						width: 130
-					},
-					{
-						text: `Jangka waktu pengembalian\t: ${userData.jangkaWaktuPinjaman}`,
-						width: '60%'
+						text: `21. Tujuan Pinjaman : ${userPinjaman.tujuanPinjaman}`,
+						width: 250
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '21. Tujuan Pinjaman',
-						width: 200
-					},
-					{
-						text: `: ${userData.tujuanPinjaman}`,
-						width: 160
+						text: `22. Jaminan yang akan diserahkan : ${userPinjaman.jaminanPinjaman}`,
+						width: 250
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '22. Jaminan yang akan diserahkan',
-						width: 200
+						text: `23. Pemilik Jaminan : ${userPinjaman.pemilikJaminan}`,
+						width: 250
 					},
 					{
-						text: `: ${userData.jaminanPinjaman}`,
-						width: '60%'
+						text: `Status Jaminan : ${userPinjaman.statusJaminan}`,
+						width: 'auto'
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '23. Pemilik Jaminan',
-						width: 200
+						text: `24. Lokasi/Kondisi : ${userPinjaman.lokasiKondisiJaminan}`,
+						width: 250
 					},
 					{
-						text: `: ${userData.pemilikJaminan}`,
-						width: 130
-					},
-					{
-						text: `Status Jaminan\t: ${userData.statusJaminan}`,
-						width: '60%'
+						text: `Harga Jaminan : ${userPinjaman.hargaJaminan}`,
+						width: 'auto'
 					}
 				]
 			},
 			{
 				columns: [
 					{
-						text: '24. Lokasi/Kondisi',
-						width: 200
-					},
-					{
-						text: `: ${userData.lokasiKondisiJaminan}`,
-						width: 130
-					},
-					{
-						text: `Harga Jaminan\t: ${userData.hargaJaminan}`,
-						width: '60%'
-					}
-				]
-			},
-			{
-				columns: [
-					{
-						text: '25. Kemampuan Bayar Bulanan',
-						width: 200
-					},
-					{
-						text: `: ${userData.bayaranPerbulan}`,
-						width: 100
-					},
-					{
-						text: '(Seratus Ribu Rupiah)',
-						width: '30%'
+						text: `25. Kemampuan Bayar Bulanan : ${userPinjaman.bayaranPerbulan}`,
+						width: 250
 					}
 				]
 			},
@@ -527,7 +421,7 @@ const templatePdf = (data) => {
 					}
 				]
 			},
-			'\n\n',
+			'\n\n\n',
 			{
 				columns: [
 					{
@@ -572,11 +466,12 @@ const templatePdf = (data) => {
 					}
 				]
 			},
+			'\n\n\n\n\n\n\n',
 			{
 				columns: [
 					{
 						text: 'Kelengkapan Adm.',
-						width: 120,
+						width: 100,
 						fontSize: 10
 					},
 					{
@@ -640,7 +535,7 @@ const templatePdf = (data) => {
 		},
 		images: {
 			headerImg: imageData
-		}
+		},
 	};
 };
 
