@@ -128,11 +128,6 @@ class PinjamanOnline {
 const templatePdf = (data) => {
 	const userPinjaman = new PinjamanOnline().clone(data);
 
-	const date = new Date();
-	const day = date.getDate();
-	const month = date.getMonth();
-	const year = date.getFullYear();
-
 	return {
 		header: {
 			image: 'headerImg',
@@ -152,7 +147,7 @@ const templatePdf = (data) => {
 						width: '70%'
 					},
 					{
-						text: `Tanggal: ${day} - ${month} - ${year}`
+						text: `Tanggal: ${TimeZone(new Date()).tz('Asia/Jakarta').format('DD/MM/YYYY')}`
 					}
 				]
 			},
@@ -384,8 +379,7 @@ const templatePdf = (data) => {
 			{
 				columns: [
 					{
-						text: `25. Kemampuan Bayar Bulanan : ${userPinjaman.bayaranPerbulan}`,
-						width: 250
+						text: `25. Kemampuan Bayar Bulanan : ${userPinjaman.bayaranPerbulan}`
 					}
 				]
 			},
